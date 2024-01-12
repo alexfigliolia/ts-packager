@@ -2,7 +2,21 @@
   "name": "@figliolia/ts-packager",
   "version": "1.0.0",
   "description": "A set of packaging tools for building typescript libraries for Common JS and ES Modules",
-  "license": "ISC",
+  "keywords": [
+    "typescript",
+    "packager",
+    "build tool",
+    "common js",
+    "esm",
+    "es modules",
+    "common.js"
+  ],
+  "homepage": "https://github.com/alexfigliolia/ts-packager#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexfigliolia/ts-packager.git"
+  },
+  "license": "MIT",
   "author": "Alex Figliolia",
   "exports": {
     ".": {
@@ -54,5 +68,8 @@
     "tsc-alias": "^1.8.8",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^4.4.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
