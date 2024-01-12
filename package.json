@@ -1,6 +1,6 @@
 {
   "name": "@figliolia/ts-packager",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A set of packaging tools for building typescript libraries for Common JS and ES Modules",
   "keywords": [
     "typescript",
@@ -21,7 +21,8 @@
   "exports": {
     ".": {
       "import": "./dist/mjs/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.js"
     }
   },
   "main": "dist/cjs/index.js",

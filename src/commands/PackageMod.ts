@@ -62,6 +62,7 @@ export class PackageMod implements Preprocessor {
         ".": {
           import: "./dist/mjs/index.js",
           require: "./dist/cjs/index.js",
+          types: "./dist/types/index.d.ts",
         },
       },
       main: "dist/cjs/index.js",
