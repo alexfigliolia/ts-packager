@@ -10,7 +10,7 @@ yarn add -D @figliolia/ts-packager && npm link
 ### Background
 For several years the migration to ES Modules has been a large pain point for package maintainers. This package is designed to take care of the interoperability by allowing you to distribute your build for both Common JS and ESM. 
 
-The CLI will read from your project's TS Config, then override the appropriate options and build time to generate each build. It'll also take care of modifying your package.json file to appropriately distribute these builds.
+The CLI will read from your project's TS Config, then override the appropriate options at build time to generate each build. It'll also take care of modifying your package.json file to appropriately distribute these builds.
 
 Let's no longer distribute packages that break the projects of our peers!
 
