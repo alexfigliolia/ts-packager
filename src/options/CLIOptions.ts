@@ -7,14 +7,14 @@ export class CLIOptions {
   project: string;
   constructor({
     help = false,
-    entrypoint = "",
     project = "",
+    entrypoint = "",
     command = "build-all",
   }: IOptions) {
     this.help = help;
-    this.command = command;
-    this.entrypoint = entrypoint;
     this.project = project;
+    this.entrypoint = entrypoint;
+    this.command = command || "build-all";
   }
 
   public get<K extends keyof CLIOptions>(key: K): CLIOptions[K] {
