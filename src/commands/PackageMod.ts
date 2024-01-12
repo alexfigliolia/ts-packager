@@ -16,17 +16,7 @@ export class PackageMod implements Preprocessor {
     const packagePath = this.findPackageFile();
     const buffer = await readFile(packagePath);
     const packageFile = JSON.parse(buffer.toString());
-    const mod = Object.assign({}, packageFile, {
-      exports: {
-        ".": {
-          import: "./dist/mjs/index.js",
-          require: "./dist/cjs/index.js",
-        },
-      },
-      main: "dist/cjs/index.js",
-      module: "dist/mjs/index.js",
-      types: "dist/types/index.d.ts",
-    });
+    const mod = this.appendConfiguration(packageFile);
     await writeFile(packagePath, BuildOverrides.format(mod));
   }
 
@@ -45,5 +35,53 @@ export class PackageMod implements Preprocessor {
       process.exit(0);
     }
     return packageFile;
+  }
+
+  private appendConfiguration(packageFile: Record<string, any>) {
+    const config = this.buildConfiguration;
+    if (!config) {
+      return {};
+    }
+    return Object.assign({}, packageFile, config);
+  }
+
+  private get buildConfiguration() {
+    switch (this.options.get("command")) {
+      case "build-all":
+        return PackageMod.buildAll;
+      case "build-common":
+        return PackageMod.buildCommon;
+      case "build-esm":
+        return PackageMod.buildESM;
+    }
+  }
+
+  private static get buildAll() {
+    return {
+      exports: {
+        ".": {
+          import: "./dist/mjs/index.js",
+          require: "./dist/cjs/index.js",
+        },
+      },
+      main: "dist/cjs/index.js",
+      module: "dist/mjs/index.js",
+      types: "dist/types/index.d.ts",
+    };
+  }
+
+  private static get buildESM() {
+    return {
+      main: "dist/esm/index.js",
+      module: "dist/esm/index.js",
+      types: "dist/types/index.d.ts",
+    };
+  }
+
+  private static get buildCommon() {
+    return {
+      main: "dist/cjs/index.js",
+      types: "dist/types/index.d.ts",
+    };
   }
 }
