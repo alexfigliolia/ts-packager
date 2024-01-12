@@ -20,9 +20,7 @@ export class Validations {
     const command = this.options.get("command");
     if (!Validations.commands.has(command)) {
       Logger.error(
-        `The command ${Logger.redBold(
-          command,
-        )} does not exist! Please choose from one of the following:`,
+        `The specified command does not exist! Please choose from one of the following:`,
       );
       Logger.list(Array.from(Validations.commands), 5);
       Logger.newLine();

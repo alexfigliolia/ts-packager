@@ -19,6 +19,7 @@
     "src/*"
   ],
   "scripts": {
+    "build": "ts-node -r tsconfig-paths/register src/CLI.ts --command build-all --entrypoint src",
     "cli": "ts-node -r tsconfig-paths/register src/CLI.ts",
     "lint": "ts-node ci/commands/Lint.ts",
     "test": "ts-node ci/commands/Test.ts"

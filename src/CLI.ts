@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Builder } from "./Builder";
 
 (async () => {
