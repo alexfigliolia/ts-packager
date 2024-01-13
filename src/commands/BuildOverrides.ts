@@ -23,7 +23,7 @@ export class BuildOverrides implements Preprocessor {
     ]);
   }
 
-  public cleanUp() {
+  public static removeTMP() {
     Logger.info("Cleaning up temporary directories");
     return new ChildProcess("rm -rf tmp").handler;
   }

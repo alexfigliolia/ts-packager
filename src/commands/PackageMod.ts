@@ -20,8 +20,6 @@ export class PackageMod implements Preprocessor {
     await writeFile(packagePath, BuildOverrides.format(mod));
   }
 
-  public async cleanUp() {}
-
   private findPackageFile() {
     const directory = this.options.get("project");
     let fixedPath = directory;

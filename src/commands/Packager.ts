@@ -18,11 +18,11 @@ export class Packager {
     const Processors = Packager.preProcessors.map(V => new V(this.options));
     await Promise.all(Processors.map(P => P.run()));
     await this.runBuild();
-    return Promise.all(Processors.map(P => P.cleanUp()));
+    return BuildOverrides.removeTMP();
   }
 
   private async runBuild() {
-    await this.clearCache();
+    await Packager.removeDIST();
     await this.buildTypes();
     switch (this.build) {
       case "commonjs":
@@ -35,7 +35,7 @@ export class Packager {
     }
   }
 
-  private clearCache() {
+  public static removeDIST() {
     Logger.info("Deleting build folder");
     return new ChildProcess("rm -rf dist").handler;
   }

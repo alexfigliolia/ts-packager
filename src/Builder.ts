@@ -1,11 +1,16 @@
-import { ChildProcess } from "@figliolia/child-process";
-import path from "path";
-import { existsSync } from "fs";
 import { Logger } from "logging";
-import { Packager, PackageMod } from "commands";
+import { Packager, PackageMod, BuildOverrides } from "commands";
 import { CLIParser, CLISchemas, Validations } from "options";
 
 export class Builder extends CLIParser {
+  private complete = false;
+  private cleaningUp = false;
+  constructor() {
+    super();
+    this.onExit = this.onExit.bind(this);
+    this.listenForKillSignals();
+  }
+
   public async CLI() {
     if (this.get("help")) {
       return this.printHelp();
@@ -13,14 +18,15 @@ export class Builder extends CLIParser {
     const validators = new Validations(this);
     validators.validateAll();
     try {
-      await this.run();
+      await this.executeCommand();
+      this.complete = true;
       Logger.info("Done!");
     } finally {
-      await this.removeTMP();
+      this.onExit();
     }
   }
 
-  private run() {
+  private executeCommand() {
     switch (this.get("command")) {
       case "fix-package-file":
         return new PackageMod(this).run();
@@ -45,11 +51,22 @@ export class Builder extends CLIParser {
     });
   }
 
-  public async removeTMP() {
-    const project = this.get("project");
-    const directory = path.join(project, "tmp");
-    if (existsSync(directory)) {
-      return new ChildProcess("rm -rf tmp").handler;
+  onExit() {
+    if (!this.cleaningUp) {
+      void BuildOverrides.removeTMP();
+      this.cleaningUp = true;
+      if (!this.complete) {
+        void Packager.removeDIST();
+      }
     }
+  }
+
+  private listenForKillSignals() {
+    process.on("exit", this.onExit);
+    process.on("SIGINT", this.onExit);
+    process.on("SIGQUIT", this.onExit);
+    process.on("beforeExit", this.onExit);
+    process.on("uncaughtException", this.onExit);
+    process.on("unhandledRejection", this.onExit);
   }
 }
