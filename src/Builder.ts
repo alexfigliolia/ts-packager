@@ -52,6 +52,9 @@ export class Builder extends CLIParser {
   }
 
   onExit() {
+    if (this.complete) {
+      return;
+    }
     if (!this.cleaningUp) {
       void BuildOverrides.removeTMP();
       this.cleaningUp = true;
