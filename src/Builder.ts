@@ -13,6 +13,7 @@ export class Builder extends CLIParser {
 
   public async CLI() {
     if (this.get("help")) {
+      this.complete = true;
       return this.printHelp();
     }
     const validators = new Validations(this);
