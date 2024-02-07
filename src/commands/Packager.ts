@@ -1,17 +1,19 @@
 import { ChildProcess } from "@figliolia/child-process";
 import { writeFileSync } from "fs";
 import path from "path";
-import { exec } from "child_process";
-import { promisify } from "util";
 import type { CLIOptions } from "options";
 import { Logger } from "logging";
 import type { Build } from "./types";
 import { PackageMod } from "./PackageMod";
 import { BuildOverrides } from "./BuildOverrides";
+import type { SpawnOptions } from "child_process";
 
 export class Packager {
-  static preProcessors = [PackageMod, BuildOverrides];
-  private static execute = promisify(exec);
+  private static readonly spawnOptions: SpawnOptions = {
+    shell: true,
+    stdio: "inherit",
+  };
+  private static readonly preProcessors = [PackageMod, BuildOverrides];
   constructor(private options: CLIOptions, private build: Build = "all") {}
 
   public async run() {
@@ -42,26 +44,29 @@ export class Packager {
 
   private async buildESM() {
     Logger.info("Building ES Modules");
-    await Packager.execute(
+    await new ChildProcess(
       "npx tsc -p tmp/tsconfig.mjs.json && npx tsc-alias -p tmp/tsconfig.mjs.json",
-    );
+      Packager.spawnOptions,
+    ).handler;
     this.addESMRoot();
     return this.patchESMExtensions();
   }
 
   private async buildCommon() {
     Logger.info("Building Common JS");
-    await Packager.execute(
+    await new ChildProcess(
       "npx tsc -p tmp/tsconfig.cjs.json && npx tsc-alias -p tmp/tsconfig.cjs.json",
-    );
+      Packager.spawnOptions,
+    ).handler;
     return this.addCommonRoot();
   }
 
   private async buildTypes() {
     Logger.info("Building Type Declarations");
-    return Packager.execute(
+    return new ChildProcess(
       "npx tsc -p tmp/tsconfig.types.json && npx tsc-alias -p tmp/tsconfig.types.json",
-    );
+      Packager.spawnOptions,
+    ).handler;
   }
 
   private addESMRoot() {
