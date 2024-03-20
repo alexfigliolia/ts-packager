@@ -43,12 +43,14 @@ export class Builder extends CLIParser {
   private printHelp() {
     Logger.newLine();
     CLISchemas.all().forEach(schema => {
-      Logger.LOG(
-        `${Logger.blueBold(schema.name)} (${Array.from(schema.flags).join(
-          " | ",
-        )}): ${schema.description}`,
-      );
-      schema.onHelp();
+      if (schema.description) {
+        Logger.LOG(
+          `${Logger.blueBold(schema.name)} (${Array.from(schema.flags).join(
+            " | ",
+          )}): ${schema.description}`,
+        );
+        schema.onHelp();
+      }
     });
   }
 

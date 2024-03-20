@@ -45,7 +45,6 @@ export class CLISchemas {
     name: "help",
     type: Boolean,
     defaultValue: false,
-    description:
-      "When specified, stealth will print a list of all CLI options to the console",
+    description: "",
   });
 }
