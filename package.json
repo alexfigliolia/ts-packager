@@ -1,6 +1,6 @@
 {
   "name": "@figliolia/ts-packager",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A set of packaging tools for building typescript libraries for Common JS and ES Modules",
   "keywords": [
     "typescript",
@@ -36,10 +36,10 @@
     "src/*"
   ],
   "scripts": {
-    "build": "ts-node -r tsconfig-paths/register src/CLI.ts --command build-all --entrypoint src",
-    "cli": "ts-node -r tsconfig-paths/register src/CLI.ts",
-    "lint": "ts-node ci/commands/Lint.ts",
-    "test": "ts-node ci/commands/Test.ts"
+    "build": "tsx src/CLI.ts --command build-all --entrypoint src",
+    "cli": "tsx src/CLI.ts",
+    "lint": "tsx ci/commands/Lint.ts",
+    "test": "tsx ci/commands/Test.ts"
   },
   "dependencies": {
     "@figliolia/child-process": "^1.0.1",
@@ -65,9 +65,7 @@
     "jest-extended": "^4.0.0",
     "prettier": "^2.8.8",
     "ts-jest": "^29.1.1",
-    "ts-node": "^10.9.1",
-    "tsc-alias": "^1.8.8",
-    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.7.1",
     "typescript": "^4.4.2"
   },
   "publishConfig": {
