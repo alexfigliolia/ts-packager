@@ -1,6 +1,6 @@
 {
   "name": "@figliolia/ts-packager",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "A set of packaging tools for building typescript libraries for Common JS and ES Modules",
   "keywords": [
     "typescript",
@@ -43,7 +43,8 @@
   },
   "dependencies": {
     "@figliolia/child-process": "^1.0.1",
-    "chalk": "^4.1.2"
+    "chalk": "^4.1.2",
+    "tsc-esm-fix": "^3.0.2"
   },
   "devDependencies": {
     "@swc/core": "^1.3.99",
