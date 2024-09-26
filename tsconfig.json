@@ -18,14 +18,14 @@
     "noEmit": true,
     "baseUrl": "./src",
     "paths": {
-      "commands/*": [
-        "commands/*"
+      "Commands/*": [
+        "Commands/*"
       ],
-      "logging/*": [
-        "logging/*"
+      "Logging/*": [
+        "Logging/*"
       ],
-      "options/*": [
-        "options/*"
+      "Options/*": [
+        "Options/*"
       ]
     }
   },

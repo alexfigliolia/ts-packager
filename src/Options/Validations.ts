@@ -1,5 +1,5 @@
 import { existsSync } from "fs";
-import { Logger } from "logging";
+import { Logger } from "Logging";
 import type { CLIOptions } from "./CLIOptions";
 
 export class Validations {

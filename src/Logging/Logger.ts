@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import type { OptionSchema } from "options";
+import type { OptionSchema } from "Options";
 
 export class Logger {
   public static readonly chalk = chalk;

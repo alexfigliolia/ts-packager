@@ -1,4 +1,4 @@
-import type { CLIOptions } from "options/CLIOptions";
+import type { CLIOptions } from "Options/CLIOptions";
 
 export type Build = "esm" | "commonjs" | "all";
 

@@ -1,6 +1,6 @@
-import { BuildOverrides, PackageMod, Packager } from "commands";
-import { Logger } from "logging";
-import { CLIParser, CLISchemas, Validations } from "options";
+import { BuildOverrides, PackageMod, Packager } from "Commands";
+import { Logger } from "Logging";
+import { CLIParser, CLISchemas, Validations } from "Options";
 
 export class Builder extends CLIParser {
   private complete = false;

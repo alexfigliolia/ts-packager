@@ -1,4 +1,4 @@
-import { Logger } from "logging";
+import { Logger } from "Logging";
 import { OptionSchema } from "./OptionSchema";
 import { Validations } from "./Validations";
 

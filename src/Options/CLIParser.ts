@@ -1,5 +1,5 @@
-import { Logger } from "logging";
 import path from "path";
+import { Logger } from "Logging";
 import { CLIOptions } from "./CLIOptions";
 import { CLISchemas } from "./CLISchemas";
 import type { OptionSchema } from "./OptionSchema";
