@@ -1,8 +1,8 @@
 import { Logger } from "logging";
+import path from "path";
 import { CLIOptions } from "./CLIOptions";
 import { CLISchemas } from "./CLISchemas";
 import type { OptionSchema } from "./OptionSchema";
-import path from "path";
 
 export class CLIParser extends CLIOptions {
   constructor() {

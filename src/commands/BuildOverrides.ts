@@ -1,13 +1,18 @@
-import { ChildProcess } from "@figliolia/child-process";
+import { existsSync } from "fs";
 import { mkdir, writeFile } from "fs/promises";
-import path from "path";
 import { Logger } from "logging";
 import type { CLIOptions } from "options";
+import path from "path";
+import { ChildProcess } from "@figliolia/child-process";
 import type { Preprocessor } from "./types";
-import { existsSync } from "fs";
 
 export class BuildOverrides implements Preprocessor {
   private includes: string;
+  private static readonly commonCompilerOptions = {
+    noEmit: false,
+    composite: false,
+    declaration: false,
+  };
   constructor(public options: CLIOptions) {
     this.includes = path.resolve(options.get("entrypoint"));
   }
@@ -45,6 +50,7 @@ export class BuildOverrides implements Preprocessor {
         compilerOptions: {
           noEmit: false,
           outDir: "../dist",
+          composite: false,
         },
         include: [this.includes],
       }),
@@ -57,8 +63,7 @@ export class BuildOverrides implements Preprocessor {
       BuildOverrides.format({
         extends: "./tsconfig.build.json",
         compilerOptions: {
-          noEmit: false,
-          declaration: false,
+          ...BuildOverrides.commonCompilerOptions,
           module: "commonjs",
           outDir: "../dist/cjs",
           target: "ES2015",
@@ -74,8 +79,7 @@ export class BuildOverrides implements Preprocessor {
       BuildOverrides.format({
         extends: "./tsconfig.build.json",
         compilerOptions: {
-          noEmit: false,
-          declaration: false,
+          ...BuildOverrides.commonCompilerOptions,
           module: "esnext",
           outDir: "../dist/mjs",
           target: "esnext",
@@ -92,6 +96,7 @@ export class BuildOverrides implements Preprocessor {
         extends: "./tsconfig.build.json",
         compilerOptions: {
           noEmit: false,
+          composite: false,
           declaration: true,
           emitDeclarationOnly: true,
           module: "esnext",

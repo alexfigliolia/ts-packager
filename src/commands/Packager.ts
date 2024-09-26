@@ -1,12 +1,12 @@
-import { ChildProcess } from "@figliolia/child-process";
-import { writeFileSync } from "fs";
-import path from "path";
-import type { CLIOptions } from "options";
-import { Logger } from "logging";
-import type { Build } from "./types";
-import { PackageMod } from "./PackageMod";
-import { BuildOverrides } from "./BuildOverrides";
 import type { SpawnOptions } from "child_process";
+import { writeFileSync } from "fs";
+import { Logger } from "logging";
+import type { CLIOptions } from "options";
+import path from "path";
+import { ChildProcess } from "@figliolia/child-process";
+import { BuildOverrides } from "./BuildOverrides";
+import { PackageMod } from "./PackageMod";
+import type { Build } from "./types";
 
 export class Packager {
   private static readonly spawnOptions: SpawnOptions = {

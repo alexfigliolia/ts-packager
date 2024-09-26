@@ -1,10 +1,10 @@
-import path from "path";
 import { existsSync } from "fs";
 import { readFile, writeFile } from "fs/promises";
 import { Logger } from "logging";
 import type { CLIOptions } from "options";
-import type { Preprocessor } from "./types";
+import path from "path";
 import { BuildOverrides } from "./BuildOverrides";
+import type { Preprocessor } from "./types";
 
 export class PackageMod implements Preprocessor {
   constructor(public options: CLIOptions) {}

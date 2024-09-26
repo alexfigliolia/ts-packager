@@ -28,6 +28,7 @@ module.exports = {
     "json-format",
     "prettier",
     "@typescript-eslint",
+    "unused-imports",
   ],
   rules: {
     radix: 0,
@@ -62,6 +63,12 @@ module.exports = {
     "@typescript-eslint/no-floating-promises": [
       "error",
       { ignoreVoid: true, ignoreIIFE: true },
+    ],
+    "simple-import-sort/imports": [
+      "error",
+      {
+        groups: [["^node:", "^[a-z]", "^@?\\w", "^", "^\\.", "^\\u0000"]],
+      },
     ],
   },
   settings: {
