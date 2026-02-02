@@ -1,6 +1,6 @@
 import { existsSync } from "fs";
-import { mkdir, writeFile } from "fs/promises";
-import path from "path";
+import { mkdir, readFile, writeFile } from "fs/promises";
+import path, { join } from "path";
 import { ChildProcess } from "@figliolia/child-process";
 import { Logger } from "Logging";
 import type { CLIOptions } from "Options";
@@ -20,11 +20,12 @@ export class BuildOverrides implements Preprocessor {
   public async run() {
     Logger.info("Creating build configurations");
     const TMP = await this.makeTMP();
+    const useNodeNext = await this.useNodeNext(TMP);
     await Promise.all([
       this.makeBuild(TMP),
       this.makeCJS(TMP),
-      this.makeESM(TMP),
-      this.makeTypes(TMP),
+      this.makeESM(TMP, useNodeNext),
+      this.makeTypes(TMP, useNodeNext),
     ]);
   }
 
@@ -65,6 +66,7 @@ export class BuildOverrides implements Preprocessor {
         compilerOptions: {
           ...BuildOverrides.commonCompilerOptions,
           module: "commonjs",
+          moduleResolution: "node",
           outDir: "../dist/cjs",
           target: "ES2015",
         },
@@ -73,14 +75,14 @@ export class BuildOverrides implements Preprocessor {
     );
   }
 
-  private makeESM(directory: string) {
+  private async makeESM(directory: string, useNodeNext: boolean) {
     return writeFile(
       path.join(directory, "tsconfig.mjs.json"),
       BuildOverrides.format({
         extends: "./tsconfig.build.json",
         compilerOptions: {
           ...BuildOverrides.commonCompilerOptions,
-          module: "esnext",
+          module: useNodeNext ? "nodenext" : "esnext",
           outDir: "../dist/mjs",
           target: "esnext",
         },
@@ -89,7 +91,7 @@ export class BuildOverrides implements Preprocessor {
     );
   }
 
-  private makeTypes(directory: string) {
+  private makeTypes(directory: string, useNodeNext: boolean) {
     return writeFile(
       path.join(directory, "tsconfig.types.json"),
       BuildOverrides.format({
@@ -99,7 +101,7 @@ export class BuildOverrides implements Preprocessor {
           composite: false,
           declaration: true,
           emitDeclarationOnly: true,
-          module: "esnext",
+          module: useNodeNext ? "nodenext" : "esnext",
           outDir: "../dist/types",
           target: "esnext",
         },
@@ -110,5 +112,17 @@ export class BuildOverrides implements Preprocessor {
 
   public static format(config: Record<string, any>) {
     return JSON.stringify(config, null, 2);
+  }
+
+  private async useNodeNext(directory: string) {
+    try {
+      const originalConfig: Record<string, any> = JSON.parse(
+        (await readFile(join(directory, "../tsconfig.json"))).toString(),
+      );
+      const moduleSpec: string = originalConfig?.compilerOptions?.module ?? "";
+      return /nodenext/i.test(moduleSpec);
+    } catch {
+      return false;
+    }
   }
 }
