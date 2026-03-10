@@ -1,6 +1,6 @@
-import { existsSync } from "fs";
-import { readFile, writeFile } from "fs/promises";
-import path from "path";
+import { existsSync } from "node:fs";
+import { readFile, writeFile } from "node:fs/promises";
+import { isAbsolute, join } from "node:path";
 import { Logger } from "Logging";
 import type { CLIOptions } from "Options";
 import { BuildOverrides } from "./BuildOverrides";
@@ -23,10 +23,10 @@ export class PackageMod implements Preprocessor {
   private findPackageFile() {
     const directory = this.options.get("project");
     let fixedPath = directory;
-    if (!path.isAbsolute(fixedPath)) {
-      fixedPath = path.join(process.cwd(), fixedPath);
+    if (!isAbsolute(fixedPath)) {
+      fixedPath = join(process.cwd(), fixedPath);
     }
-    const packageFile = path.join(fixedPath, "package.json");
+    const packageFile = join(fixedPath, "package.json");
     if (!existsSync(packageFile)) {
       Logger.error("I could not find your package.json. I checked here:");
       Logger.LOG(Logger.chalk.gray(packageFile));

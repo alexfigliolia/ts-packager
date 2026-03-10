@@ -1,6 +1,6 @@
-import { existsSync } from "fs";
-import { mkdir, readFile, writeFile } from "fs/promises";
-import path, { join } from "path";
+import { existsSync } from "node:fs";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { join, resolve } from "node:path";
 import { ChildProcess } from "@figliolia/child-process";
 import { Logger } from "Logging";
 import type { CLIOptions } from "Options";
@@ -14,7 +14,7 @@ export class BuildOverrides implements Preprocessor {
     declaration: false,
   };
   constructor(public options: CLIOptions) {
-    this.includes = path.resolve(options.get("entrypoint"));
+    this.includes = resolve(options.get("entrypoint"));
   }
 
   public async run() {
@@ -36,7 +36,7 @@ export class BuildOverrides implements Preprocessor {
 
   public async makeTMP() {
     const project = this.options.get("project");
-    const directory = path.join(project, "tmp");
+    const directory = join(project, "tmp");
     if (!existsSync(directory)) {
       await mkdir(directory);
     }
@@ -45,7 +45,7 @@ export class BuildOverrides implements Preprocessor {
 
   private makeBuild(directory: string) {
     return writeFile(
-      path.join(directory, "tsconfig.build.json"),
+      join(directory, "tsconfig.build.json"),
       BuildOverrides.format({
         extends: "../tsconfig.json",
         compilerOptions: {
@@ -60,7 +60,7 @@ export class BuildOverrides implements Preprocessor {
 
   private makeCJS(directory: string) {
     return writeFile(
-      path.join(directory, "tsconfig.cjs.json"),
+      join(directory, "tsconfig.cjs.json"),
       BuildOverrides.format({
         extends: "./tsconfig.build.json",
         compilerOptions: {
@@ -77,7 +77,7 @@ export class BuildOverrides implements Preprocessor {
 
   private async makeESM(directory: string, useNodeNext: boolean) {
     return writeFile(
-      path.join(directory, "tsconfig.mjs.json"),
+      join(directory, "tsconfig.mjs.json"),
       BuildOverrides.format({
         extends: "./tsconfig.build.json",
         compilerOptions: {
@@ -93,7 +93,7 @@ export class BuildOverrides implements Preprocessor {
 
   private makeTypes(directory: string, useNodeNext: boolean) {
     return writeFile(
-      path.join(directory, "tsconfig.types.json"),
+      join(directory, "tsconfig.types.json"),
       BuildOverrides.format({
         extends: "./tsconfig.build.json",
         compilerOptions: {

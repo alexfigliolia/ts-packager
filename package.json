@@ -1,6 +1,6 @@
 {
   "name": "@figliolia/ts-packager",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "A set of packaging tools for building typescript libraries for Common JS and ES Modules",
   "keywords": [
     "typescript",
@@ -67,6 +67,7 @@
     "jest-extended": "^4.0.0",
     "prettier": "^2.8.8",
     "ts-jest": "^29.1.1",
+    "tsc-alias": "^1.8.16",
     "tsx": "^4.7.1",
     "typescript": "^4.4.2"
   },

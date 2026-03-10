@@ -1,6 +1,6 @@
+import { writeFile } from "node:fs/promises";
+import { resolve } from "node:path";
 import type { SpawnOptions } from "child_process";
-import { writeFileSync } from "fs";
-import path from "path";
 import { ChildProcess } from "@figliolia/child-process";
 import { Logger } from "Logging";
 import type { CLIOptions } from "Options";
@@ -48,7 +48,7 @@ export class Packager {
       "npx tsc -p tmp/tsconfig.mjs.json && npx tsc-alias -p tmp/tsconfig.mjs.json",
       Packager.spawnOptions,
     ).handler;
-    this.addESMRoot();
+    await this.addESMRoot();
     return this.patchESMExtensions();
   }
 
@@ -70,8 +70,8 @@ export class Packager {
   }
 
   private addESMRoot() {
-    writeFileSync(
-      path.resolve("dist/mjs/package.json"),
+    return writeFile(
+      resolve("dist/mjs/package.json"),
       this.format({
         type: "module",
         exports: "./index.js",
@@ -80,8 +80,8 @@ export class Packager {
   }
 
   private addCommonRoot() {
-    writeFileSync(
-      path.resolve("dist/cjs/package.json"),
+    return writeFile(
+      resolve("dist/cjs/package.json"),
       this.format({
         type: "commonjs",
       }),
